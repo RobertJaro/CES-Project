@@ -6,20 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>861</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="content">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="PlotWidget" name="main_plot" native="true"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>861</width>
      <height>26</height>
     </rect>
    </property>
@@ -27,28 +33,59 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionConnect"/>
+    <addaction name="settings_action"/>
+    <addaction name="statistic_action"/>
     <addaction name="separator"/>
-    <addaction name="actionQuit"/>
+    <addaction name="quit_action"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionConnect">
+  <widget class="QDockWidget" name="station1_dock">
+   <property name="windowTitle">
+    <string>Station 1</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="PlotWidget" name="station1_plot"/>
+  </widget>
+  <widget class="QDockWidget" name="station2_dock">
+   <property name="windowTitle">
+    <string>Station 2</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="PlotWidget" name="station2_plot"/>
+  </widget>
+  <action name="settings_action">
    <property name="text">
-    <string>Connect</string>
+    <string>Settings</string>
    </property>
   </action>
-  <action name="actionQuit">
+  <action name="quit_action">
    <property name="text">
     <string>Quit</string>
    </property>
   </action>
+  <action name="statistic_action">
+   <property name="text">
+    <string>Statistic</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>ces.app.plot</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
-   <sender>actionQuit</sender>
+   <sender>quit_action</sender>
    <signal>triggered(bool)</signal>
    <receiver>Main</receiver>
    <slot>close()</slot>
