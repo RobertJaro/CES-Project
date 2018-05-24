@@ -18,6 +18,6 @@ class CESApp(QtWidgets.QMainWindow):
         fetcher.start()
 
     def _onRefresh(self, data_model: DataModel):
-        self.ui.main_plot.updateModel(data_model.temperature, data_model.humidity, data_model.time)
-        self.ui.station1_plot.updateModel(data_model.temperature, data_model.humidity, data_model.time)
-        self.ui.station2_plot.updateModel(data_model.temperature, data_model.humidity, data_model.time)
+        self.ui.main_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
+        self.ui.station1_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
+        self.ui.station2_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)

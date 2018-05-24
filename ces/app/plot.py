@@ -19,15 +19,19 @@ class PlotWidget(QtWidgets.QWidget):
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
         FigureCanvas.setSizePolicy(self.canvas, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self.canvas)
+
+        self.axes = self.figure.subplots(2, 1, sharex=True)
+        self.figure.subplots_adjust(hspace=0)
+
         self.v_layout.addWidget(self.canvas)
         self.v_layout.addWidget(self.toolbar)
 
-    def updateModel(self, temperature, humidity, time):
-        self.figure.clear()
-        axs = self.figure.subplots(2, 1, sharex=True)
-        self.figure.subplots_adjust(hspace=0)
+    def updateData(self, temperature, humidity, time):
+        self.axes[0].clear()
+        self.axes[1].clear()
 
-        axs[0].plot(time, temperature)
-        axs[1].plot(time, humidity)
+        self.axes[0].plot(time, temperature)
+        self.axes[1].plot(time, humidity)
+
 
         self.canvas.draw()

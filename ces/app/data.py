@@ -7,6 +7,8 @@ import numpy as np
 from PyQt5.QtCore import pyqtSignal
 from qtpy import QtCore
 
+from ces.app import time_interval
+
 
 class DataModel:
     def __init__(self):
@@ -30,16 +32,16 @@ class DataFetcher(QtCore.QObject, Thread):
 
     def __init__(self):
         self.provider = MockDataProvider()
-        self.interval = 2
 
         QtCore.QObject.__init__(self)
         Thread.__init__(self)
 
     def run(self):
         while True:
-            data_model = self.provider.loadData()
+            now = datetime.now()
+            data_model = self.provider.loadData(now - timedelta(hours=2), now)
             self.loaded.emit(data_model)
-            time.sleep(self.interval)
+            time.sleep(time_interval)
 
 
 class MockDataProvider:
@@ -47,31 +49,32 @@ class MockDataProvider:
     mock_temp_2 = []
     mock_hum_1 = []
     mock_hum_2 = []
-    time = []
+    mock_time = []
 
-    last_time = datetime.now()
-
-    def loadData(self) -> DataModel:
+    def loadData(self, from_time, to_time) -> DataModel:
         model = DataModel()
 
-        now = datetime.now()
-        diff = now - self.last_time
-        self._updateData(diff)
-        self.last_time = now
+        self._updateData(to_time, from_time)
 
         model.temperature_station1.extend(self.mock_temp_1)
         model.temperature_station2.extend(self.mock_temp_2)
         model.humidity_station1.extend(self.mock_hum_1)
         model.humidity_station2.extend(self.mock_hum_2)
-        model.time.extend(self.time)
+        model.time.extend(self.mock_time)
 
         return model
 
-    def _updateData(self, time_range):
-        count = int(time_range / timedelta(seconds=2))
+    def _updateData(self, to_time, from_time):
+        self.mock_temp_1.clear()
+        self.mock_temp_2.clear()
+        self.mock_hum_1.clear()
+        self.mock_hum_2.clear()
+        self.mock_time.clear()
+
+        count = int((to_time - from_time) / timedelta(seconds=time_interval))
         for i in range(count):
             self.mock_temp_1.append(random.uniform(20, 30))
             self.mock_temp_2.append(random.uniform(20, 30))
             self.mock_hum_1.append(random.uniform(20, 70))
             self.mock_hum_2.append(random.uniform(20, 70))
-            self.time.append(self.last_time + timedelta(seconds=2 * i))
+            self.mock_time.append(from_time + i * timedelta(seconds=time_interval))
