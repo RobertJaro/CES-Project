@@ -7,7 +7,7 @@ import numpy as np
 from PyQt5.QtCore import pyqtSignal
 from qtpy import QtCore
 
-from ces.app import time_interval
+from ces.app import getTimeInterval
 
 
 class DataModel:
@@ -41,7 +41,7 @@ class DataFetcher(QtCore.QObject, Thread):
             now = datetime.now()
             data_model = self.provider.loadData(now - timedelta(hours=2), now)
             self.loaded.emit(data_model)
-            time.sleep(time_interval)
+            time.sleep(getTimeInterval())
 
 
 class MockDataProvider:
@@ -71,10 +71,10 @@ class MockDataProvider:
         self.mock_hum_2.clear()
         self.mock_time.clear()
 
-        count = int((to_time - from_time) / timedelta(seconds=time_interval))
+        count = int((to_time - from_time) / timedelta(seconds=getTimeInterval()))
         for i in range(count):
             self.mock_temp_1.append(random.uniform(20, 30))
             self.mock_temp_2.append(random.uniform(20, 30))
             self.mock_hum_1.append(random.uniform(20, 70))
             self.mock_hum_2.append(random.uniform(20, 70))
-            self.mock_time.append(from_time + i * timedelta(seconds=time_interval))
+            self.mock_time.append(from_time + i * timedelta(seconds=getTimeInterval()))
