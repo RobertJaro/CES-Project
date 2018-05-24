@@ -33,5 +33,35 @@ class PlotWidget(QtWidgets.QWidget):
         self.axes[0].plot(time, temperature)
         self.axes[1].plot(time, humidity)
 
+        self.canvas.draw()
+
+
+class BarWidget(QtWidgets.QWidget):
+
+    def __init__(self, *args):
+        QtWidgets.QWidget.__init__(self)
+        self.v_layout = QtWidgets.QVBoxLayout()
+        self.setLayout(self.v_layout)
+
+        self.initMainCanvas()
+
+    def initMainCanvas(self):
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar2QT(self.canvas, self)
+        self.toolbar.hide()
+        FigureCanvas.setSizePolicy(self.canvas, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self.canvas)
+
+        self.axs = self.figure.subplots(2, 1)
+
+        self.v_layout.addWidget(self.canvas)
+
+    def updateData(self, temperature, humidity, days):
+        self.axs[0].clear()
+        self.axs[1].clear()
+
+        self.axs[0].bar(days, temperature, color="red")
+        self.axs[1].bar(days, humidity)
 
         self.canvas.draw()

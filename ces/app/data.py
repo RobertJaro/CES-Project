@@ -31,15 +31,13 @@ class DataFetcher(QtCore.QObject, Thread):
     loaded = pyqtSignal(object)
 
     def __init__(self):
-        self.provider = MockDataProvider()
-
         QtCore.QObject.__init__(self)
         Thread.__init__(self)
 
     def run(self):
         while True:
             now = datetime.now()
-            data_model = self.provider.loadData(now - timedelta(hours=2), now)
+            data_model = data_provider.loadData(now - timedelta(hours=2), now)
             self.loaded.emit(data_model)
             time.sleep(getTimeInterval())
 
@@ -78,3 +76,6 @@ class MockDataProvider:
             self.mock_hum_1.append(random.uniform(20, 70))
             self.mock_hum_2.append(random.uniform(20, 70))
             self.mock_time.append(from_time + i * timedelta(seconds=getTimeInterval()))
+
+
+data_provider = MockDataProvider()

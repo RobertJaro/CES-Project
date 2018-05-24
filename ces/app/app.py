@@ -2,6 +2,7 @@ from qtpy import QtWidgets
 
 from ces.app import setTimeInterval, getTimeInterval
 from ces.app.data import DataFetcher, DataModel
+from ces.app.statistic import StatisticDialog
 from ces.ui.main import Ui_Main
 
 
@@ -19,6 +20,7 @@ class CESApp(QtWidgets.QMainWindow):
         fetcher.start()
 
         self.ui.settings_action.triggered.connect(self._onSettings)
+        self.ui.statistic_action.triggered.connect(self._onStatistic)
 
     def _onRefresh(self, data_model: DataModel):
         self.ui.main_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
@@ -30,3 +32,7 @@ class CESApp(QtWidgets.QMainWindow):
                                                     value=getTimeInterval(), min=0.001, max=5000)
         if ok:
             setTimeInterval(item)
+
+    def _onStatistic(self):
+        dlg = StatisticDialog()
+        dlg.exec_()
