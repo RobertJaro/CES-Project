@@ -7,6 +7,7 @@ from threading import Thread
 
 import numpy as np
 from PyQt5.QtCore import pyqtSignal
+from dateutil import parser
 from qtpy import QtCore
 
 from ces.app import getTimeInterval
@@ -98,7 +99,7 @@ class DataProvider:
             model.temperature_station2.append(d[1])
             model.humidity_station1.append(d[2])
             model.humidity_station2.append(d[3])
-            model.time.append(d[4])
+            model.time.append(parser.parse(d[4]))
         return model
 
 

@@ -1,3 +1,4 @@
+from matplotlib import dates as md
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -33,6 +34,11 @@ class PlotWidget(QtWidgets.QWidget):
         self.axes[0].plot(time, temperature)
         self.axes[1].plot(time, humidity)
 
+        xformatter = md.DateFormatter('%H:%M')
+        xlocator = md.MinuteLocator(byminute=range(0, 60, 10), interval=1)
+        self.axes[0].xaxis.set_major_locator(xlocator)
+        self.axes[0].xaxis.set_major_formatter(xformatter)
+
         self.canvas.draw()
 
 
@@ -63,5 +69,12 @@ class BarWidget(QtWidgets.QWidget):
 
         self.axs[0].bar(days, temperature, color="red")
         self.axs[1].bar(days, humidity)
+
+        xformatter = md.DateFormatter('%d.%m.')
+        xlocator = md.DayLocator()
+        self.axs[0].xaxis.set_major_locator(xlocator)
+        self.axs[0].xaxis.set_major_formatter(xformatter)
+        self.axs[1].xaxis.set_major_locator(xlocator)
+        self.axs[1].xaxis.set_major_formatter(xformatter)
 
         self.canvas.draw()
