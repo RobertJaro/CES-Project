@@ -15,7 +15,7 @@ class StatisticDialog(QtWidgets.QDialog):
         self.ui = Ui_Statistic()
         self.ui.setupUi(self)
 
-        now = datetime.now()
+        now = datetime.utcnow()
         data_model = data_provider.loadData(now - timedelta(weeks=3), now)
 
         day = None

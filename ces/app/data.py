@@ -1,4 +1,6 @@
+import pickle
 import random
+import socket
 import time
 from datetime import datetime, timedelta
 from threading import Thread
@@ -8,6 +10,9 @@ from PyQt5.QtCore import pyqtSignal
 from qtpy import QtCore
 
 from ces.app import getTimeInterval
+
+HOST = "10.0.0.5"
+PORT = 50008
 
 
 class DataModel:
@@ -36,7 +41,7 @@ class DataFetcher(QtCore.QObject, Thread):
 
     def run(self):
         while True:
-            now = datetime.now()
+            now = datetime.utcnow()
             data_model = data_provider.loadData(now - timedelta(hours=2), now)
             self.loaded.emit(data_model)
             time.sleep(getTimeInterval())
@@ -78,4 +83,23 @@ class MockDataProvider:
             self.mock_time.append(from_time + i * timedelta(seconds=getTimeInterval()))
 
 
-data_provider = MockDataProvider()
+class DataProvider:
+    def __init__(self):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((HOST, PORT))
+
+    def loadData(self, from_time, to_time) -> DataModel:
+        self.socket.sendall('{};{}'.format(from_time, to_time).encode())
+        response = self.socket.recv(10000)
+        data = pickle.loads(response)
+        model = DataModel()
+        for d in data:
+            model.temperature_station1.append(d[0])
+            model.temperature_station2.append(d[1])
+            model.humidity_station1.append(d[2])
+            model.humidity_station2.append(d[3])
+            model.time.append(d[4])
+        return model
+
+
+data_provider = DataProvider()
