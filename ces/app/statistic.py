@@ -38,7 +38,7 @@ class StatisticDialog(QtWidgets.QDialog):
 
         self.ui.avg.updateData(avg_tmp, avg_hum, days.keys())
         self.ui.max.updateData(max_tmp, max_hum, days.keys())
-        self.ui.min.updateData(min_tmp, avg_hum, days.keys())
+        self.ui.min.updateData(min_tmp, min_hum, days.keys())
 
     def _getData(self, data_model, i):
         return [data_model.temperature_station1[i], data_model.temperature_station2[i], data_model.humidity_station1[i],
