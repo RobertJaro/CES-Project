@@ -103,4 +103,4 @@ class DataProvider:
         return model
 
 
-data_provider = DataProvider()
+data_provider = MockDataProvider()

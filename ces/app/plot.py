@@ -31,7 +31,7 @@ class PlotWidget(QtWidgets.QWidget):
         self.axes[0].clear()
         self.axes[1].clear()
 
-        self.axes[0].plot(time, temperature)
+        self.axes[0].plot(time, temperature, color='red')
         self.axes[1].plot(time, humidity)
 
         xformatter = md.DateFormatter('%H:%M')
@@ -67,8 +67,10 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[0].clear()
         self.axs[1].clear()
 
-        self.axs[0].bar(days, temperature, color="red")
-        self.axs[1].bar(days, humidity)
+        self.axs[0].bar(days, temperature, color="r")
+        self.axs[1].bar(days, humidity, color='c')
+
+
 
         xformatter = md.DateFormatter('%d.%m.')
         xlocator = md.DayLocator()
