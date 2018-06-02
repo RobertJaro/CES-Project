@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,7 +21,7 @@ class Ui_Main(object):
         self.verticalLayout.addWidget(self.main_plot)
         Main.setCentralWidget(self.content)
         self.menubar = QtWidgets.QMenuBar(Main)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 861, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 861, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -38,6 +38,9 @@ class Ui_Main(object):
         self.station2_plot.setObjectName("station2_plot")
         self.station2_dock.setWidget(self.station2_plot)
         Main.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.station2_dock)
+        self.statusBar = QtWidgets.QStatusBar(Main)
+        self.statusBar.setObjectName("statusBar")
+        Main.setStatusBar(self.statusBar)
         self.settings_action = QtWidgets.QAction(Main)
         self.settings_action.setObjectName("settings_action")
         self.quit_action = QtWidgets.QAction(Main)

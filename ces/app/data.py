@@ -35,6 +35,7 @@ class DataModel:
 
 class DataFetcher(QtCore.QObject, Thread):
     loaded = pyqtSignal(object)
+    connected = pyqtSignal(bool)
 
     def __init__(self):
         QtCore.QObject.__init__(self)
@@ -43,9 +44,16 @@ class DataFetcher(QtCore.QObject, Thread):
     def run(self):
         while True:
             now = datetime.utcnow()
-            data_model = data_provider.loadData(now - timedelta(hours=2), now)
-            self.loaded.emit(data_model)
-            time.sleep(getTimeInterval())
+            try:
+                data_model = data_provider.loadData(now - timedelta(hours=2), now)
+                self.loaded.emit(data_model)
+                #time.sleep(getTimeInterval())
+
+            except:
+                connected = data_provider.connect()
+                self.connected.emit(connected)
+                if not connected:
+                    time.sleep(1)
 
 
 class MockDataProvider:
@@ -86,10 +94,23 @@ class MockDataProvider:
 
 class DataProvider:
     def __init__(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((HOST, PORT))
+        self.socket = None
+
+    def connect(self):
+        try:
+            print('try')
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((HOST, PORT))
+            return True
+        except Exception as ex:
+            print('except')
+            print(ex)
+            self.socket = None
+            return False
 
     def loadData(self, from_time, to_time) -> DataModel:
+        if not self.socket:
+            raise Exception("No connection active")
         self.socket.sendall('{};{}'.format(from_time, to_time).encode())
         response = self.socket.recv(10000)
         data = pickle.loads(response)
@@ -103,4 +124,4 @@ class DataProvider:
         return model
 
 
-data_provider = MockDataProvider()
+data_provider = DataProvider()

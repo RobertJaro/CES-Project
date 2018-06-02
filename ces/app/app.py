@@ -14,9 +14,14 @@ class CESApp(QtWidgets.QMainWindow):
 
         self.ui.station1_plot.toolbar.hide()
         self.ui.station2_plot.toolbar.hide()
+        self.ui.main_plot.setTitle("Average")
+        self.ui.station1_plot.setTitle("1")
+        self.ui.station2_plot.setTitle("2")
+        self.ui.statusBar.showMessage("Disconnected")
 
         fetcher = DataFetcher()
         fetcher.loaded.connect(self._onRefresh)
+        fetcher.connected.connect(lambda x: self.statusBar().showMessage("Connected") if x else self.statusBar().showMessage("Disconnected"))
         fetcher.start()
 
         self.ui.settings_action.triggered.connect(self._onSettings)
