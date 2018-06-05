@@ -1,8 +1,5 @@
-from typing import List
-
 from matplotlib import dates as md
 from matplotlib import pyplot as plt
-from matplotlib.axes import Axes
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from qtpy import QtWidgets
@@ -11,6 +8,8 @@ from qtpy import QtWidgets
 class PlotWidget(QtWidgets.QWidget):
 
     def __init__(self, *args):
+        self.title = ""
+
         QtWidgets.QWidget.__init__(self)
         self.v_layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.v_layout)
@@ -30,19 +29,21 @@ class PlotWidget(QtWidgets.QWidget):
         self.v_layout.addWidget(self.canvas)
         self.v_layout.addWidget(self.toolbar)
 
-    def setTitle(self,title):
+    def setTitle(self, title):
+        self.title = title
         self.axes[0].set_title(title)
 
     def updateData(self, temperature, humidity, time):
         self.axes[0].clear()
         self.axes[1].clear()
 
-
-        self.axes[0].plot(time, temperature,color='r')
+        self.axes[0].plot(time, temperature, color='r')
         self.axes[0].set_ylabel('Temperature [°C]')
         self.axes[0].set_xlabel('Time')
         self.axes[1].plot(time, humidity, color='c')
         self.axes[1].set_ylabel('Humidity [%]')
+
+        self.axes[0].set_title(self.title)
 
         xformatter = md.DateFormatter('%H:%M')
         xlocator = md.MinuteLocator(byminute=range(0, 60, 10), interval=1)
@@ -55,6 +56,8 @@ class PlotWidget(QtWidgets.QWidget):
 class BarWidget(QtWidgets.QWidget):
 
     def __init__(self, *args):
+        self.title = ""
+
         QtWidgets.QWidget.__init__(self)
         self.v_layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.v_layout)
@@ -81,7 +84,6 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[0].bar(days, temperature, color="r")
         self.axs[1].bar(days, humidity, color='b')
 
-
         xformatter = md.DateFormatter('%d.%m.')
         xlocator = md.DayLocator()
         self.axs[0].xaxis.set_major_locator(xlocator)
@@ -89,4 +91,10 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[1].xaxis.set_major_locator(xlocator)
         self.axs[1].xaxis.set_major_formatter(xformatter)
 
+        self.axs[0].set_title(self.title)
+
         self.canvas.draw()
+
+    def setTitle(self, title):
+        self.title = title
+        self.axs[0].set_title(title)

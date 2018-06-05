@@ -37,10 +37,13 @@ class StatisticDialog(QtWidgets.QDialog):
         min_tmp = [np.min(np.append(d[:, 0].ravel(), d[:, 1].ravel())) for d in days.values()]
         min_hum = [np.min(np.append(d[:, 2].ravel(), d[:, 3].ravel())) for d in days.values()]
 
-        self.ui.avg.setWindowTitle('Average')
+        self.ui.avg.setTitle('Average')
         self.ui.avg.updateData(avg_tmp, avg_hum, days.keys())
 
+        self.ui.max.setTitle('Max')
         self.ui.max.updateData(max_tmp, max_hum, days.keys())
+
+        self.ui.min.setTitle('Min')
         self.ui.min.updateData(min_tmp, min_hum, days.keys())
 
     def _getData(self, data_model, i):
