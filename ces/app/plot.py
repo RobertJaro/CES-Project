@@ -79,7 +79,7 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[1].clear()
 
         self.axs[0].bar(days, temperature, color="r")
-        self.axs[1].bar(days, humidity, color='c')
+        self.axs[1].bar(days, humidity, color='b')
 
 
         xformatter = md.DateFormatter('%d.%m.')
