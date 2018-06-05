@@ -15,8 +15,11 @@ class CESApp(QtWidgets.QMainWindow):
         self.ui.station1_plot.toolbar.hide()
         self.ui.station2_plot.toolbar.hide()
         self.ui.main_plot.setTitle("Average")
-        self.ui.station1_plot.setTitle("1")
-        self.ui.station2_plot.setTitle("2")
+        self.ui.station1_plot.setTitle("Station 1")
+
+        self.ui.station2_plot.setTitle("Station 2")
+
+
         self.ui.statusBar.showMessage("Disconnected")
 
         fetcher = DataFetcher()
@@ -29,8 +32,8 @@ class CESApp(QtWidgets.QMainWindow):
 
     def _onRefresh(self, data_model: DataModel):
         self.ui.main_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
-        self.ui.station1_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
-        self.ui.station2_plot.updateData(data_model.temperature, data_model.humidity, data_model.time)
+        self.ui.station1_plot.updateData(data_model.temperature_station1, data_model.humidity_station1, data_model.time)
+        self.ui.station2_plot.updateData(data_model.temperature_station2, data_model.humidity_station2, data_model.time)
 
     def _onSettings(self):
         item, ok = QtWidgets.QInputDialog.getDouble(self, "Set Refresh Interval", "Interval (sec):",

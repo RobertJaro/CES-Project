@@ -15,6 +15,7 @@ class StatisticDialog(QtWidgets.QDialog):
         self.ui = Ui_Statistic()
         self.ui.setupUi(self)
 
+
         now = datetime.utcnow()
         data_model = data_provider.loadData(now - timedelta(weeks=3), now)
 
@@ -36,7 +37,9 @@ class StatisticDialog(QtWidgets.QDialog):
         min_tmp = [np.min(np.append(d[:, 0].ravel(), d[:, 1].ravel())) for d in days.values()]
         min_hum = [np.min(np.append(d[:, 2].ravel(), d[:, 3].ravel())) for d in days.values()]
 
+        self.ui.avg.setWindowTitle('Average')
         self.ui.avg.updateData(avg_tmp, avg_hum, days.keys())
+
         self.ui.max.updateData(max_tmp, max_hum, days.keys())
         self.ui.min.updateData(min_tmp, min_hum, days.keys())
 

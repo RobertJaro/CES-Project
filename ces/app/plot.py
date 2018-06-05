@@ -66,6 +66,7 @@ class BarWidget(QtWidgets.QWidget):
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
         self.toolbar.hide()
+
         FigureCanvas.setSizePolicy(self.canvas, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self.canvas)
 
@@ -78,8 +79,6 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[1].clear()
 
         self.axs[0].bar(days, temperature, color="r")
-        plt.title('title')
-
         self.axs[1].bar(days, humidity, color='c')
 
 

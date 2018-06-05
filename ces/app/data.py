@@ -12,7 +12,7 @@ from qtpy import QtCore
 
 from ces.app import getTimeInterval
 
-HOST = "10.0.0.5"
+HOST = "169.254.162.155" #get IP on pi with sudo hostname -I
 PORT = 50008
 
 
@@ -47,13 +47,13 @@ class DataFetcher(QtCore.QObject, Thread):
             try:
                 data_model = data_provider.loadData(now - timedelta(hours=2), now)
                 self.loaded.emit(data_model)
-                #time.sleep(getTimeInterval())
+                time.sleep(getTimeInterval())
 
             except:
                 connected = data_provider.connect()
                 self.connected.emit(connected)
                 if not connected:
-                    time.sleep(1)
+                    time.sleep(10)
 
 
 class MockDataProvider:
@@ -98,12 +98,11 @@ class DataProvider:
 
     def connect(self):
         try:
-            print('try')
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((HOST, PORT))
             return True
         except Exception as ex:
-            print('except')
+
             print(ex)
             self.socket = None
             return False
@@ -112,7 +111,7 @@ class DataProvider:
         if not self.socket:
             raise Exception("No connection active")
         self.socket.sendall('{};{}'.format(from_time, to_time).encode())
-        response = self.socket.recv(10000)
+        response = self.socket.recv(1000000000)
         data = pickle.loads(response)
         model = DataModel()
         for d in data:
@@ -124,4 +123,4 @@ class DataProvider:
         return model
 
 
-data_provider = DataProvider()
+data_provider = MockDataProvider()
