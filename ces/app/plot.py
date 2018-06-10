@@ -46,7 +46,7 @@ class PlotWidget(QtWidgets.QWidget):
         self.axes[0].set_title(self.title)
 
         xformatter = md.DateFormatter('%H:%M')
-        xlocator = md.MinuteLocator(byminute=range(0, 60, 10), interval=1)
+        xlocator = md.MinuteLocator(byminute=range(0, 60, 15), interval=1)
         self.axes[0].xaxis.set_major_locator(xlocator)
         self.axes[0].xaxis.set_major_formatter(xformatter)
 
@@ -85,10 +85,7 @@ class BarWidget(QtWidgets.QWidget):
         self.axs[1].bar(days, humidity, color='b')
 
         xformatter = md.DateFormatter('%d.%m.')
-        xlocator = md.DayLocator()
-        self.axs[0].xaxis.set_major_locator(xlocator)
         self.axs[0].xaxis.set_major_formatter(xformatter)
-        self.axs[1].xaxis.set_major_locator(xlocator)
         self.axs[1].xaxis.set_major_formatter(xformatter)
 
         self.axs[0].set_title(self.title)

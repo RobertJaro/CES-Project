@@ -22,10 +22,10 @@ class StatisticDialog(QtWidgets.QDialog):
         day = None
         days = {}
         for i, time in enumerate(data_model.time):
-            if day is time.day:
+            if day is not None and day.day is time.day:
                 np.append(days[day], self._getData(data_model, i))
             else:
-                day = time.day
+                day = time
                 days[day] = np.array([self._getData(data_model, i)])
 
         avg_tmp = [np.average(np.append(d[:, 0].ravel(), d[:, 1].ravel())) for d in days.values()]

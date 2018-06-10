@@ -43,4 +43,5 @@ class CESApp(QtWidgets.QMainWindow):
 
     def _onStatistic(self):
         dlg = StatisticDialog()
+        dlg.showMaximized()
         dlg.exec_()
